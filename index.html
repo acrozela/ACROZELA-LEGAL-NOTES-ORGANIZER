@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="ACROZELA Legal Notes Organizer - A professional tool for lawyers to organize cases, legal notes, and fees.">
+    <meta name="keywords" content="Legal Notes Organizer, acrozela Legal Notes Organizer, Legal Tool, Lawyer Notes, Case Manager">
+    <meta name="author" content="ACROZELA TECH">
+    <title>ACROZELA LEGAL NOTES ORGANIZER</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --accent-color: #3498db; /* Professional Lite Blue */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --border-color: #e0e0e0;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        header {
+            background-color: var(--card-bg);
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        header h1 {
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            color: #3498db; /* LITE BLUE CHANGE APPLIED HERE */
+            font-size: 1.5rem;
+        }
+
+        /* Main Container */
+        .container {
+            flex: 1;
+            width: 100%;
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Form Styling */
+        .note-builder {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 2rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .grid-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .input-group {
+            margin-bottom: 1rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        input, textarea {
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        input:focus, textarea:focus {
+            border-color: var(--accent-color);
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .btn-add {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-add:hover {
+            background-color: #1a252f;
+        }
+
+        /* Dashboard/List */
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-header h2 {
+            font-size: 1.2rem;
+            color: var(--primary-color);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: #fff;
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            color: var(--text-muted);
+        }
+
+        .note-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 5px solid var(--accent-color);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 1rem;
+            position: relative;
+            animation: fadeIn 0.4s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .note-card h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .note-meta {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .currency-tag {
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        .note-content {
+            font-size: 0.95rem;
+            white-space: pre-wrap;
+            border-top: 1px solid var(--border-color);
+            padding-top: 1rem;
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            color: var(--danger-color);
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.8rem;
+            border: 1px solid var(--danger-color);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--card-bg);
+            text-align: center;
+            padding: 2rem;
+            border-top: 1px solid var(--border-color);
+            margin-top: 2rem;
+        }
+
+        footer p {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            letter-spacing: 1px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .grid-inputs {
+                grid-template-columns: 1fr;
+            }
+            .full-width {
+                grid-column: span 1;
+            }
+            header h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>ACROZELA LEGAL NOTES ORGANIZER</h1>
+    </header>
+
+    <div class="container">
+        <!-- Input Section -->
+        <section class="note-builder">
+            <div class="grid-inputs">
+                <div class="input-group">
+                    <label>CASE TITLE / REF</label>
+                    <input type="text" id="caseTitle" placeholder="e.g. Sharma vs State">
+                </div>
+                <div class="input-group">
+                    <label>CLIENT NAME</label>
+                    <input type="text" id="clientName" placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label>CASE NUMBER</label>
+                    <input type="text" id="caseNumber" placeholder="CN-202X-XXX">
+                </div>
+                <div class="input-group">
+                    <label>PROFESSIONAL FEE (INR)</label>
+                    <input type="number" id="caseFee" placeholder="0.00">
+                </div>
+                <div class="input-group full-width">
+                    <label>LEGAL NOTES / REMARKS</label>
+                    <textarea id="caseNotes" rows="4" placeholder="Type case details or hearing notes here..."></textarea>
+                </div>
+            </div>
+            <button class="btn-add" onclick="saveNote()">ADD TO ORGANIZER</button>
+        </section>
+
+        <!-- Dashboard Section -->
+        <div class="dashboard-header">
+            <h2>DASHBOARD</h2>
+            <div id="totalCounter" style="font-size: 0.9rem; font-weight: 600;"></div>
+        </div>
+
+        <div id="notesContainer">
+            <!-- Notes appear here -->
+            <div class="empty-state">
+                No legal records found. Start by adding a new case note above.
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>ACROZELA LEGAL NOTES ORGANIZER</p>
+        <p style="margin-top: 5px;">DEVELOPED BY ACROZELA TECH</p>
+    </footer>
+
+    <script>
+        // Real-time Storage Logic
+        document.addEventListener('DOMContentLoaded', renderNotes);
+
+        function saveNote() {
+            const title = document.getElementById('caseTitle').value;
+            const client = document.getElementById('clientName').value;
+            const number = document.getElementById('caseNumber').value;
+            const fee = document.getElementById('caseFee').value;
+            const content = document.getElementById('caseNotes').value;
+
+            if (!title || !content) {
+                alert("Please enter at least a Case Title and Notes.");
+                return;
+            }
+
+            const noteObj = {
+                id: Date.now(),
+                title: title.toUpperCase(),
+                client: client,
+                number: number,
+                fee: fee ? parseFloat(fee) : 0,
+                content: content,
+                date: new Date().toLocaleDateString('en-IN')
+            };
+
+            let notes = JSON.parse(localStorage.getItem('acrozela_notes')) || [];
+            notes.unshift(noteObj);
+            localStorage.setItem('acrozela_notes', JSON.stringify(notes));
+
+            // Reset UI
+            document.getElementById('caseTitle').value = '';
+            document.getElementById('clientName').value = '';
+            document.getElementById('caseNumber').value = '';
+            document.getElementById('caseFee').value = '';
+            document.getElementById('caseNotes').value = '';
+
+            renderNotes();
+        }
+
+        function deleteNote(id) {
+            if(confirm("Are you sure you want to delete this legal note?")) {
+                let notes = JSON.parse(localStorage.getItem('acrozela_notes')) || [];
+                notes = notes.filter(note => note.id !== id);
+                localStorage.setItem('acrozela_notes', JSON.stringify(notes));
+                renderNotes();
+            }
+        }
+
+        function formatCurrency(amt) {
+            return new Intl.NumberFormat('en-IN', {
+                style: 'currency',
+                currency: 'INR',
+                maximumFractionDigits: 0
+            }).format(amt);
+        }
+
+        function renderNotes() {
+            const container = document.getElementById('notesContainer');
+            const counter = document.getElementById('totalCounter');
+            const notes = JSON.parse(localStorage.getItem('acrozela_notes')) || [];
+
+            if (notes.length === 0) {
+                container.innerHTML = `<div class="empty-state">DASHBOARD EMPTY: No legal records found.</div>`;
+                counter.innerHTML = "";
+                return;
+            }
+
+            let totalFees = 0;
+            container.innerHTML = '';
+
+            notes.forEach(note => {
+                totalFees += note.fee;
+                const card = document.createElement('div');
+                card.className = 'note-card';
+                card.innerHTML = `
+                    <span class="delete-btn" onclick="deleteNote(${note.id})">DELETE</span>
+                    <h3>${note.title}</h3>
+                    <div class="note-meta">
+                        <span><strong>Client:</strong> ${note.client || 'N/A'}</span>
+                        <span><strong>Ref:</strong> ${note.number || 'N/A'}</span>
+                        <span><strong>Date:</strong> ${note.date}</span>
+                        <span class="currency-tag">${formatCurrency(note.fee)}</span>
+                    </div>
+                    <div class="note-content">${note.content}</div>
+                `;
+                container.appendChild(card);
+            });
+
+            counter.innerHTML = `TOTAL REVENUE: ${formatCurrency(totalFees)}`;
+        }
+    </script>
+</body>
+</html>
